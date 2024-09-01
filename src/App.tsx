@@ -1,5 +1,5 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Editor from "./views/editor";
+import Editor from "./views/editor88";
 
 function App() {
   return (
