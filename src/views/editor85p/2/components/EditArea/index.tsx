@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, MouseEventHandler } from "react";
 import { useComponentConfigStore } from "../../stores/component-config";
 import { Component, useComponetsStore } from "../../stores/components";
 
@@ -17,6 +17,16 @@ export function EditArea() {
       1
     );
   }, []);
+
+  const handleMouseOver: MouseEventHandler = (e) => {
+    const path = e.nativeEvent.composedPath();
+    console.log(path);
+    for (let i = 0; i < path.length; i++) {
+      const ele = path[i] as HTMLElement;
+      const componentId = ele.dataset?.componentId;
+      console.log(componentId, "componentId");
+    }
+  };
 
   function renderComponents(components: Component[]): React.ReactNode {
     return components.map((component: Component) => {
@@ -38,9 +48,8 @@ export function EditArea() {
       );
     });
   }
-
   return (
-    <div className="h-[100%]">
+    <div className="h-[100%]" onMouseOver={handleMouseOver}>
       {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
       {renderComponents(components)}
     </div>

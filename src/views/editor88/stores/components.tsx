@@ -91,10 +91,11 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
 
       return { components: [...state.components] };
     }),
+  // 掘金上 到这里了  忘记具体在哪里
   updateComponentStyles: (componentId, styles) => {
-    set((state) => {
-      const component = getComponentById(+componentId, state.components);
-    });
+    // set((state) => {
+    //   const component = getComponentById(+componentId, state.components);
+    // });
   },
 }));
 
