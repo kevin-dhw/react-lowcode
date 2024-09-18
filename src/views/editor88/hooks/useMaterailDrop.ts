@@ -24,6 +24,9 @@ export function useMaterailDrop(accept: string[], id: number) {
           name: item.type,
           desc: config.desc,
           props,
+          // styles: {
+          //   backgroundColor: "red",
+          // },
         },
         id
       );

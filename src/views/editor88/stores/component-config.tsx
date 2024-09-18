@@ -17,6 +17,7 @@ export interface ComponentConfig {
   component: any;
   desc?: string;
   setter?: ComponentSetter[];
+  stylesSetter?: ComponentSetter[];
 }
 
 interface State {
@@ -56,6 +57,18 @@ export const useComponentConfigStore = create<State & Action>((set) => ({
           name: "text",
           label: "文本",
           type: "input",
+        },
+      ],
+      stylesSetter: [
+        {
+          name: "width",
+          label: "宽度",
+          type: "inputNumber",
+        },
+        {
+          name: "hei=ght",
+          label: "高度",
+          type: "inputNumber",
         },
       ],
       component: Button,

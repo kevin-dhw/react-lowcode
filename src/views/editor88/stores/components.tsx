@@ -5,7 +5,7 @@ export interface Component {
   id: number;
   name: string;
   props: any;
-  style?: CSSProperties;
+  styles?: CSSProperties;
   desc?: string;
   children?: Component[];
   parentId?: number;
@@ -93,9 +93,14 @@ export const useComponetsStore = create<State & Action>((set, get) => ({
     }),
   // 掘金上 到这里了  忘记具体在哪里
   updateComponentStyles: (componentId, styles) => {
-    // set((state) => {
-    //   const component = getComponentById(+componentId, state.components);
-    // });
+    set((state) => {
+      const component = getComponentById(+componentId, state.components);
+      if (component) {
+        component.styles = { ...component.styles, ...styles };
+        return { components: [...state.components] };
+      }
+      return { components: [...state.components] };
+    });
   },
 }));
 
