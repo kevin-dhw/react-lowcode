@@ -30,7 +30,7 @@ export default function ComponentAttr() {
       return <Input />;
     }
   }
-
+  // 如何更新  要清楚Form的使用
   function valueChange(changeValues: ComponentConfig) {
     if (curComponentId) {
       updateComponentProps(curComponentId, changeValues);

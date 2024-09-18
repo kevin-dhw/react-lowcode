@@ -22,5 +22,6 @@ module.exports = {
     //
     "react-hooks/rules-of-hooks": ["off"],
     "@typescript-eslint/ban-types": ["off"],
+    "react-hooks/exhaustive-deps": "warn",
   },
 };
