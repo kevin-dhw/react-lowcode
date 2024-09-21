@@ -1,45 +1,36 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { getComponentById, useComponetsStore } from "../../stores/components";
 
-interface HoverMaskProps {
-  containerClassName: string;
+export interface HoverMaskProps {
   componentId: number;
-  portalWrapperClassName: string;
+  containerClass: string;
 }
 
-function HoverMask({
-  containerClassName,
-  portalWrapperClassName,
-  componentId,
-}: HoverMaskProps) {
+const HoverMask: React.FC<HoverMaskProps> = (props) => {
+  const { componentId, containerClass } = props;
   const [position, setPosition] = useState({
-    left: 0,
     top: 0,
+    left: 0,
     width: 0,
     height: 0,
     labelTop: 0,
     labelLeft: 0,
   });
-  const { components } = useComponetsStore();
 
   useEffect(() => {
     updatePosition();
   }, [componentId]);
 
-  function updatePosition() {
-    if (!componentId) return;
-
-    const container = document.querySelector(`.${containerClassName}`);
+  const updatePosition = () => {
+    const container = document.querySelector(`.${containerClass}`);
     if (!container) return;
-
     const node = document.querySelector(`[data-component-id="${componentId}"]`);
     if (!node) return;
-
     const { top, left, width, height } = node.getBoundingClientRect();
+    console.log(node.getBoundingClientRect(), "666666");
     const { top: containerTop, left: containerLeft } =
       container.getBoundingClientRect();
-
+    // 获取组件名字的一些宽高属性, 这里把高亮组件的top, left增高一点 来放组件名
     let labelTop = top - containerTop + container.scrollTop;
     const labelLeft = left - containerLeft + width;
 
@@ -49,26 +40,21 @@ function HoverMask({
 
     setPosition({
       top: top - containerTop + container.scrollTop,
-      left: left - containerLeft + container.scrollTop,
+      left: left - containerLeft + container.scrollLeft,
       width,
       height,
       labelTop,
       labelLeft,
     });
-  }
+  };
 
   const el = useMemo(() => {
-    // const el = document.createElement("div");
-    // el.className = `wrapper`;
-
-    // const container = document.querySelector(`.${containerClassName}`);
-    // container!.appendChild(el);
-    return document.querySelector(`.${portalWrapperClassName}`)!;
+    const el = document.createElement("div");
+    el.className = "wrapper";
+    const container = document.querySelector(`.${containerClass}`);
+    container?.appendChild(el);
+    return el;
   }, []);
-
-  const curComponent = useMemo(() => {
-    return getComponentById(componentId, components);
-  }, [componentId]);
 
   return createPortal(
     <>
@@ -108,12 +94,12 @@ function HoverMask({
             whiteSpace: "nowrap",
           }}
         >
-          {curComponent?.desc}
+          组件名
         </div>
       </div>
     </>,
     el
   );
-}
+};
 
 export default HoverMask;

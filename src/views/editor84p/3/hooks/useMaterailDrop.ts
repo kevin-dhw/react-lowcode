@@ -1,21 +1,20 @@
 import { useDrop } from "react-dnd";
 import { useComponetsStore } from "../stores/components";
-import { useComponentsConfigStore } from "../stores/component-config";
 
 const useMaterialDrop = (accept: string[], id: number) => {
   const { addComponent } = useComponetsStore();
-  const { componentConfig } = useComponentsConfigStore();
+  console.log(id);
+
   const [{ canDrop }, drop] = useDrop(() => ({
-    accept: accept,
+    accept,
     drop: (item: { type: string }, monitor) => {
       if (monitor.didDrop()) return;
-
-      const props = componentConfig?.[item.type].name;
+      console.log(item);
       addComponent(
         {
           id: new Date().getTime(),
           name: item.type,
-          props,
+          props: {},
         },
         id
       );

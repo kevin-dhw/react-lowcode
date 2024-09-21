@@ -1,66 +1,62 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useComponetsStore, Component } from "../../stores/components";
 import { useComponentConfigStore } from "../../stores/component-config";
 
 export function EditArea() {
-  const { addComponent, components } = useComponetsStore();
+  const { components, addComponent } = useComponetsStore();
   const { componentConfig } = useComponentConfigStore();
 
-  useEffect(() => {
-    addComponent?.(
+  React.useEffect(() => {
+    addComponent(
       {
-        id: 333,
+        id: 33345,
         name: "Container",
         props: {},
         children: [],
       },
       1
     );
-    addComponent?.(
+    addComponent(
       {
-        id: 12345,
-        name: "Button",
+        id: 33345444,
+        name: "Container",
         props: {},
         children: [],
       },
-      333
+      33345
     );
-    addComponent?.(
+    addComponent(
       {
-        id: 12345,
+        id: 3334544455,
         name: "Button",
         props: {},
         children: [],
       },
-      1
+      33345444
     );
   }, []);
-  console.log(components, "components");
 
-  const renderComponents = (components: Component[]): React.ReactNode => {
-    return components.map((component: Component) => {
-      const config = componentConfig?.[component.name];
-      if (!config?.component) return null;
-
+  const renderComponent = (components: Component[]): React.ReactNode => {
+    return components.map((component) => {
+      const config = componentConfig[component.name];
+      if (!config) return;
       return React.createElement(
         config.component,
         {
           key: component.id,
           id: component.id,
-          ...config.defaultProps,
           ...component.props,
+          ...config.defaultProps,
         },
-        renderComponents(component.children || [])
+        renderComponent(component.children || [])
       );
     });
   };
-
   return (
     <div className="h-[100%]">
-      edit1111
+      edit
       <br />
-      {/* <pre>{JSON.stringify(components, null, 2)}</pre> */}
-      {renderComponents(components)}
+      {renderComponent(components)}
     </div>
   );
 }
