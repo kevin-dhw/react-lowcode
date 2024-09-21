@@ -7,7 +7,8 @@ export interface MaterialItemProps {
 
 export function MaterialItem(props: MaterialItemProps) {
   const { name } = props;
-  const [, drag] = useDrag({
+
+  const [, drap] = useDrag({
     type: name,
     item: {
       type: name,
@@ -16,7 +17,7 @@ export function MaterialItem(props: MaterialItemProps) {
 
   return (
     <div
-      ref={drag}
+      ref={drap}
       className="
             border-dashed
             border-[1px]

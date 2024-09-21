@@ -1,55 +1,47 @@
 import { create } from "zustand";
+
+import Page from "../materials/Page";
 import Container from "../materials/Container";
 import Button from "../materials/Button";
-import Page from "../materials/Page";
 
 export interface ComponentConfig {
   name: string;
   defaultProps: Record<string, any>;
   component: any;
-  desc: string;
 }
 
-interface State {
+export interface State {
   componentConfig: { [key: string]: ComponentConfig };
 }
 
-interface Action {
-  registerComponent: (name: string, componentConfig: ComponentConfig) => void;
+export interface Action {
+  registerComponent?: (name: string, component: ComponentConfig) => void;
 }
 
 export const useComponentConfigStore = create<State & Action>((set) => ({
   componentConfig: {
-    Container: {
-      name: "Container",
-      defaultProps: {},
-      desc: "容器",
-      component: Container,
-    },
-    Button: {
-      name: "Button",
-      desc: "按钮",
-      defaultProps: {
-        type: "primary",
-        text: "按钮",
-      },
-      component: Button,
-    },
     Page: {
-      desc: "页面",
       name: "Page",
       defaultProps: {},
       component: Page,
     },
+    Container: {
+      name: "Container",
+      defaultProps: {},
+      component: Container,
+    },
+    Button: {
+      name: "Button",
+      defaultProps: { type: "primary", text: "按钮" },
+      component: Button,
+    },
   },
-  registerComponent: (name, componentConfig) =>
+  registerComponent: (name, component) => {
     set((state) => {
       return {
         ...state,
-        componentConfig: {
-          ...state.componentConfig,
-          [name]: componentConfig,
-        },
+        componentConfig: { ...state.componentConfig, [name]: component },
       };
-    }),
+    });
+  },
 }));
