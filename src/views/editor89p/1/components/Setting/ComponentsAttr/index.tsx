@@ -1,24 +1,22 @@
-import React, { CSSProperties, useEffect } from "react";
-import { Form, Input, InputNumber, Select } from "antd";
-// import CssEditor from "../CssEditor";
-// import { debounce } from "lodash";
-//  ComponentConfig,
+import { Form, Input, Select } from "antd";
+import { useEffect } from "react";
 import {
+  ComponentConfig,
   ComponentSetter,
   useComponentConfigStore,
 } from "../../../stores/component-config";
 import { useComponetsStore } from "../../../stores/components";
 
-const ComponentsStyle: React.FC = () => {
+export default function ComponentAttr() {
   const [form] = Form.useForm();
 
-  const { curComponentId, curComponent, updateComponentStyles } =
+  const { curComponentId, curComponent, updateComponentProps } =
     useComponetsStore();
   const { componentConfig } = useComponentConfigStore();
 
   useEffect(() => {
     const data = form.getFieldsValue();
-    form.setFieldsValue({ ...data, ...curComponent?.styles });
+    form.setFieldsValue({ ...data, ...curComponent?.props });
   }, [curComponent]);
 
   if (!curComponentId || !curComponent) return null;
@@ -30,20 +28,14 @@ const ComponentsStyle: React.FC = () => {
       return <Select options={options} />;
     } else if (type === "input") {
       return <Input />;
-    } else if (type === "inputNumber") {
-      return <InputNumber />;
     }
   }
-
-  function valueChange(changeValues: CSSProperties) {
+  // 如何更新  要清楚Form的使用
+  function valueChange(changeValues: ComponentConfig) {
     if (curComponentId) {
-      updateComponentStyles?.(curComponentId, changeValues);
+      updateComponentProps(curComponentId, changeValues);
     }
   }
-
-  // const handleEditorChange = debounce((value) => {
-  //   console.log(value, "valeu");
-  // }, 500);
 
   return (
     <Form
@@ -52,16 +44,20 @@ const ComponentsStyle: React.FC = () => {
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 14 }}
     >
-      {componentConfig[curComponent.name]?.stylesSetter?.map((setter) => (
+      <Form.Item label="组件id">
+        <Input value={curComponent.id} disabled />
+      </Form.Item>
+      <Form.Item label="组件名称">
+        <Input value={curComponent.name} disabled />
+      </Form.Item>
+      <Form.Item label="组件描述">
+        <Input value={curComponent.desc} disabled />
+      </Form.Item>
+      {componentConfig[curComponent.name]?.setter?.map((setter) => (
         <Form.Item key={setter.name} name={setter.name} label={setter.label}>
           {renderFormElememt(setter)}
         </Form.Item>
       ))}
-      {/* <div className="h-[200px] border-[1px] border-[#ccc]">
-        <CssEditor value={`.comp{\n\n}`} onChange={handleEditorChange} />
-      </div> */}
     </Form>
   );
-};
-
-export default ComponentsStyle;
+}
