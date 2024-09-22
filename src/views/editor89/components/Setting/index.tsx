@@ -1,0 +1,31 @@
+import { Segmented } from "antd";
+import { useState } from "react";
+import { useComponetsStore } from "../../stores/components";
+import ComponentAttr from "./ComponentsAttr";
+import ComponentEvent from "./ComponentsEvent";
+import ComponentStyle from "./ComponentsStyle";
+
+export function Setting() {
+  const { curComponentId } = useComponetsStore();
+
+  const [key, setKey] = useState<string>("属性");
+
+  if (!curComponentId) return null;
+
+  return (
+    <div>
+      <Segmented
+        className=" mb-[20px]"
+        value={key}
+        onChange={setKey}
+        block
+        options={["属性", "样式", "事件"]}
+      />
+      <div>
+        {key === "属性" && <ComponentAttr />}
+        {key === "样式" && <ComponentStyle />}
+        {key === "事件" && <ComponentEvent />}
+      </div>
+    </div>
+  );
+}
